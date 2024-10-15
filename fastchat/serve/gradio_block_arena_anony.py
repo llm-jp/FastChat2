@@ -3,6 +3,7 @@ Chatbot Arena (battle) tab.
 Users chat with two anonymous models.
 """
 
+import copy
 import json
 import time
 
@@ -248,7 +249,13 @@ def get_battle_pair(
 
 
 def add_text(
-    state0, state1, model_selector0, model_selector1, text, request: gr.Request
+    state0,
+    state1,
+    model_selector0,
+    model_selector1,
+    text,
+    selected_model,
+    request: gr.Request,
 ):
     ip = get_ip(request)
     logger.info(f"add_text (anony). ip: {ip}. len: {len(text)}")
@@ -284,6 +291,16 @@ def add_text(
             * 6
             + [""]
         )
+
+    # Apply the chosen context
+    if selected_model == "Model A":
+        chosen_context = states[0].conv
+    elif selected_model == "Model B":
+        chosen_context = states[1].conv
+    else:
+        raise ValueError("Invalid model")
+    for i in range(num_sides):
+        states[i].conv = copy.deepcopy(chosen_context)
 
     # NOTE: We disable moderation check as we use Chatbot Arena for internal testing.
     # model_list = [states[i].model_name for i in range(num_sides)]
@@ -483,6 +500,7 @@ def build_side_by_side_ui_anony(models):
     with gr.Row():
         context_selector = gr.Radio(
             choices=["Model A", "Model B"],
+            value="Model A",
             label="Select the model to continue the chat with:",
             elem_id="context_selector",
         )
@@ -606,7 +624,7 @@ function (a, b, c, d) {
 
     textbox.submit(
         add_text,
-        states + model_selectors + [textbox],
+        states + model_selectors + [textbox, context_selector],
         states + chatbots + [textbox] + btn_list + [slow_warning],
     ).then(
         bot_response_multi,
@@ -620,7 +638,7 @@ function (a, b, c, d) {
 
     send_btn.click(
         add_text,
-        states + model_selectors + [textbox],
+        states + model_selectors + [textbox, context_selector],
         states + chatbots + [textbox] + btn_list,
     ).then(
         bot_response_multi,
