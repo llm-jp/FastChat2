@@ -481,6 +481,13 @@ def build_side_by_side_ui_anony(models):
         )
 
     with gr.Row():
+        context_selector = gr.Radio(
+            choices=["Model A", "Model B"],
+            label="Select the model to continue the chat with:",
+            elem_id="context_selector",
+        )
+
+    with gr.Row():
         textbox = gr.Textbox(
             show_label=False,
             placeholder="👉 Enter your prompt and press ENTER",
