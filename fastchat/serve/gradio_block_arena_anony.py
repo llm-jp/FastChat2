@@ -509,7 +509,7 @@ def build_side_by_side_ui_anony(models):
         context_selector = gr.Radio(
             choices=["Model A", "Model B"],
             value="Model A",
-            label="Select the model to continue the chat with:",
+            label="Select the context in which you would like to continue the conversation",
             elem_id="context_selector",
             visible=False,
         )
