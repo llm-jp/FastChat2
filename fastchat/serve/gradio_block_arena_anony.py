@@ -30,6 +30,9 @@ from fastchat.serve.gradio_web_server import (
     invisible_btn,
     enable_text,
     disable_text,
+    no_change_radio,
+    visible_radio,
+    invisible_radio,
     acknowledgment_md,
     get_ip,
     get_model_description_md,
@@ -164,6 +167,7 @@ def clear_history(request: gr.Request):
         + [disable_btn] * 2
         + [""]
         + [enable_btn]
+        + [invisible_radio]
     )
 
 
@@ -342,6 +346,9 @@ def add_text(
     for i in range(num_sides):
         if "deluxe" in states[i].model_name:
             hint_msg = SLOW_MODEL_MSG
+    
+    has_context = len(states[0].conv.messages) > 0
+    
     return (
         states
         + [x.to_gradio_chatbot() for x in states]
@@ -351,6 +358,7 @@ def add_text(
         ]
         * 6
         + [hint_msg]
+        + [visible_radio if has_context else invisible_radio]
     )
 
 
@@ -371,7 +379,7 @@ def bot_response_multi(
             state1,
             state0.to_gradio_chatbot(),
             state1.to_gradio_chatbot(),
-        ) + (no_change_btn,) * 6
+        ) + (no_change_btn,) * 6 + (no_change_radio,)
         return
 
     states = [state0, state1]
@@ -427,7 +435,7 @@ def bot_response_multi(
                 stop = False
             except StopIteration:
                 pass
-        yield states + chatbots + [disable_btn] * 6
+        yield states + chatbots + [disable_btn] * 6 + [no_change_radio]
         if stop:
             break
 
@@ -449,7 +457,7 @@ def build_side_by_side_ui_anony(models):
 
 ## 🏆 Chatbot Arena [Leaderboard](https://lmarena.ai/?leaderboard)
 - We've collected **1,000,000+** human votes to compute an LLM leaderboard for 100+ models. Find out who is the 🥇LLM Champion [here](https://lmarena.ai/?leaderboard)!
-
+｀
 ## 👇 Chat now!
 """
 
@@ -503,6 +511,7 @@ def build_side_by_side_ui_anony(models):
             value="Model A",
             label="Select the model to continue the chat with:",
             elem_id="context_selector",
+            visible=False,
         )
 
     with gr.Row():
@@ -597,7 +606,8 @@ def build_side_by_side_ui_anony(models):
         + [textbox]
         + btn_list
         + [slow_warning]
-        + [send_btn],
+        + [send_btn]
+        + [context_selector],
     )
 
     share_js = """
@@ -625,11 +635,11 @@ function (a, b, c, d) {
     textbox.submit(
         add_text,
         states + model_selectors + [textbox, context_selector],
-        states + chatbots + [textbox] + btn_list + [slow_warning],
+        states + chatbots + [textbox] + btn_list + [slow_warning] + [context_selector],
     ).then(
         bot_response_multi,
         states + [temperature, top_p, max_output_tokens],
-        states + chatbots + btn_list,
+        states + chatbots + btn_list + [context_selector],
     ).then(
         flash_buttons,
         [],
