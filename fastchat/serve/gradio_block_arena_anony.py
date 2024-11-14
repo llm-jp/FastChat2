@@ -84,22 +84,7 @@ def vote_last_response(states, vote_type, model_selectors, request: gr.Request):
     gr.Info(
         "🎉 Thanks for voting! Your vote shapes the leaderboard, please vote RESPONSIBLY."
     )
-    if ":" not in model_selectors[0]:
-        for i in range(5):
-            names = (
-                "### Model A: " + states[0].model_name,
-                "### Model B: " + states[1].model_name,
-            )
-            # yield names + ("",) + (disable_btn,) * 4
-            yield names + (disable_text,) + (disable_btn,) * 5 + (disable_radio,)
-            time.sleep(0.1)
-    else:
-        names = (
-            "### Model A: " + states[0].model_name,
-            "### Model B: " + states[1].model_name,
-        )
-        # yield names + ("",) + (disable_btn,) * 4
-        yield names + (disable_text,) + (disable_btn,) * 5 + (disable_radio,)
+    yield (disable_btn,) * 4
 
 
 def leftvote_last_response(
@@ -587,26 +572,22 @@ def build_side_by_side_ui_anony(models):
     leftvote_btn.click(
         leftvote_last_response,
         states + model_selectors,
-        model_selectors
-        + [textbox, leftvote_btn, rightvote_btn, tie_btn, bothbad_btn, send_btn, context_selector],
+        [leftvote_btn, rightvote_btn, tie_btn, bothbad_btn],
     )
     rightvote_btn.click(
         rightvote_last_response,
         states + model_selectors,
-        model_selectors
-        + [textbox, leftvote_btn, rightvote_btn, tie_btn, bothbad_btn, send_btn, context_selector],
+        [leftvote_btn, rightvote_btn, tie_btn, bothbad_btn],
     )
     tie_btn.click(
         tievote_last_response,
         states + model_selectors,
-        model_selectors
-        + [textbox, leftvote_btn, rightvote_btn, tie_btn, bothbad_btn, send_btn, context_selector],
+        [leftvote_btn, rightvote_btn, tie_btn, bothbad_btn],
     )
     bothbad_btn.click(
         bothbad_vote_last_response,
         states + model_selectors,
-        model_selectors
-        + [textbox, leftvote_btn, rightvote_btn, tie_btn, bothbad_btn, send_btn, context_selector],
+        [leftvote_btn, rightvote_btn, tie_btn, bothbad_btn],
     )
     regenerate_btn.click(
         regenerate, states, states + chatbots + [textbox] + btn_list
