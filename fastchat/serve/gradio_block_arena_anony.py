@@ -264,7 +264,6 @@ def add_text(
     ip = get_ip(request)
     logger.info(f"add_text (anony). ip: {ip}. len: {len(text)}")
     states = [state0, state1]
-    model_selectors = [model_selector0, model_selector1]
 
     # Init states if necessary
     if states[0] is None:
@@ -283,6 +282,7 @@ def add_text(
         ]
 
     if len(text) <= 0:
+        gr.Warning("Enter your prompt")
         for i in range(num_sides):
             states[i].skip_next = True
         return (
@@ -291,7 +291,20 @@ def add_text(
             + [""]  # textbox
             + [no_change_btn] * 6  # btn_list
             + [""]  # slow_warning
-            + [invisible_radio]  # context_selector
+            + [visible_radio if states[0].conv.messages else invisible_radio]  # context_selector
+        )
+
+    if context_selector is None and states[0].conv.messages:
+        gr.Warning("Select the context in which you want to continue the conversation.")
+        for i in range(num_sides):
+            states[i].skip_next = True
+        return (
+            states  # states
+            + [x.to_gradio_chatbot() for x in states]  # chatbots
+            + [text]  # textbox
+            + [no_change_btn] * 6  # btn_list
+            + [""]  # slow_warning
+            + [visible_radio]  # context_selector
         )
 
     # Apply the chosen context
@@ -329,7 +342,7 @@ def add_text(
             + [x.to_gradio_chatbot() for x in states]  # chatbots
             + [CONVERSATION_LIMIT_MSG]  # textbox
             + [no_change_btn] * 6  # btn_list
-            + [""]  # slow_warning
+            + [""]  # warning
             + [visible_radio]  # context_selector
         )
 
@@ -499,7 +512,6 @@ def build_side_by_side_ui_anony(models):
     with gr.Row():
         context_selector = gr.Radio(
             choices=["Model A", "Model B"],
-            value="Model A",
             label="Select the context in which you would like to continue the conversation",
             elem_id="context_selector",
             visible=False,
