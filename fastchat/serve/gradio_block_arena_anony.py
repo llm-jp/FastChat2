@@ -179,6 +179,19 @@ def share_click(state0, state1, model_selector0, model_selector1, request: gr.Re
         )
 
 
+def disclose_models(state0, state1):
+    return (
+        [f"### Model A: {state0.model_name}", f"### Model B: {state1.model_name}"]  # model_selectors
+        +[disable_text]  # textbox
+        + [disable_btn] * 4  # vote buttons
+        + [disable_btn]  # send_btn
+        + [disable_btn]  # regenerate_btn
+        + [enable_btn]  # clear_btn
+        + [disable_radio]  # context_selector
+        + [disable_btn]  # disclose_btn
+    )
+
+
 SAMPLING_WEIGHTS = {}
 
 # target model sampling weights will be boosted.
@@ -506,6 +519,12 @@ def build_side_by_side_ui_anony(models):
         bothbad_btn = gr.Button(
             value="👎  Both are bad", visible=False, interactive=False
         )
+    
+    with gr.Row():
+        disclose_btn = gr.Button(
+            value="End the conversation and disclose the model names",
+            # visible=False,  # TODO: fix
+        )
 
     with gr.Row():
         context_selector = gr.Radio(
@@ -655,6 +674,23 @@ function (a, b, c, d) {
         states + chatbots + btn_list,
     ).then(
         flash_buttons, [], btn_list
+    )
+
+    disclose_btn.click(
+        disclose_models,
+        states,
+        model_selectors + [
+            textbox,
+            leftvote_btn,
+            rightvote_btn,
+            tie_btn,
+            bothbad_btn,
+            send_btn,
+            regenerate_btn,
+            clear_btn,
+            context_selector,
+            disclose_btn,
+        ],
     )
 
     return states + model_selectors
