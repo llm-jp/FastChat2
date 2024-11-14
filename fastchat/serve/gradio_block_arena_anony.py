@@ -255,8 +255,6 @@ def get_battle_pair(
 def add_text(
     state0,
     state1,
-    model_selector0,
-    model_selector1,
     text,
     context_selector,
     request: gr.Request,
@@ -637,7 +635,7 @@ function (a, b, c, d) {
 
     textbox.submit(
         add_text,
-        states + model_selectors + [textbox] + [context_selector],
+        states + [textbox] + [context_selector],
         states + chatbots + [textbox] + btn_list + [slow_warning] + [context_selector],
     ).then(
         bot_response_multi,
@@ -649,7 +647,7 @@ function (a, b, c, d) {
 
     send_btn.click(
         add_text,
-        states + model_selectors + [textbox] + [context_selector],
+        states + [textbox] + [context_selector],
         states + chatbots + [textbox] + btn_list + [slow_warning] + [context_selector],
     ).then(
         bot_response_multi,
