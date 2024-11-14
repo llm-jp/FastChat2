@@ -60,8 +60,8 @@ disable_text = gr.Textbox(
     placeholder='Press "🎲 New Round" to start over👇 (Note: Your vote shapes the leaderboard, please vote RESPONSIBLY!)',
 )
 no_change_radio = gr.Radio()
-visible_radio = gr.Radio(visible=True)
-invisible_radio = gr.Radio(visible=False)
+visible_radio = gr.Radio(value=None, visible=True)
+invisible_radio = gr.Radio(value=None, visible=False)
 
 controller_url = None
 enable_moderation = False
