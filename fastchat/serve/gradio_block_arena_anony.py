@@ -18,8 +18,6 @@ from fastchat.constants import (
     CONVERSATION_TURN_LIMIT,
     SURVEY_LINK,
 )
-from fastchat.model.model_adapter import get_conversation_template
-from fastchat.serve.gradio_block_arena_named import flash_buttons
 from fastchat.serve.gradio_web_server import (
     State,
     bot_response,
@@ -175,6 +173,10 @@ def disclose_models(state0, state1):
         + [disable_radio]  # context_selector
         + [disable_btn]  # disclose_btn
     )
+
+
+def enable_buttons():
+    return [enable_btn] * 7
 
 
 SAMPLING_WEIGHTS = {}
@@ -508,7 +510,7 @@ def build_side_by_side_ui_anony(models):
     with gr.Row():
         disclose_btn = gr.Button(
             value="End the conversation and disclose the model names",
-            # visible=False,  # TODO: fix
+            visible=False,
         )
 
     with gr.Row():
@@ -596,7 +598,7 @@ def build_side_by_side_ui_anony(models):
         states + [temperature, top_p, max_output_tokens],
         states + chatbots + btn_list,
     ).then(
-        flash_buttons, [], btn_list
+        enable_buttons, [], btn_list + [disclose_btn]
     )
     clear_btn.click(
         clear_history,
@@ -642,7 +644,7 @@ function (a, b, c, d) {
         states + [temperature, top_p, max_output_tokens],
         states + chatbots + btn_list,
     ).then(
-        flash_buttons, [], btn_list
+        enable_buttons, [], btn_list + [disclose_btn]
     )
 
     send_btn.click(
@@ -654,7 +656,7 @@ function (a, b, c, d) {
         states + [temperature, top_p, max_output_tokens],
         states + chatbots + btn_list,
     ).then(
-        flash_buttons, [], btn_list
+        enable_buttons, [], btn_list + [disclose_btn]
     )
 
     disclose_btn.click(
