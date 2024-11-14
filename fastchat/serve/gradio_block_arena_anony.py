@@ -156,7 +156,7 @@ def clear_history(request: gr.Request):
         + anony_names
         + [enable_text]
         + [invisible_btn] * 4
-        + [disable_btn] * 2
+        + [disable_btn] * 3
         + [""]
         + [enable_btn]
         + [invisible_radio]
@@ -296,7 +296,7 @@ def add_text(
             states  # states
             + [x.to_gradio_chatbot() for x in states]  # chatbots
             + [""]  # textbox
-            + [no_change_btn] * 6  # btn_list
+            + [no_change_btn] * 7  # btn_list
             + [""]  # slow_warning
             + [visible_radio if states[0].conv.messages else invisible_radio]  # context_selector
         )
@@ -309,7 +309,7 @@ def add_text(
             states  # states
             + [x.to_gradio_chatbot() for x in states]  # chatbots
             + [text]  # textbox
-            + [no_change_btn] * 6  # btn_list
+            + [no_change_btn] * 7  # btn_list
             + [""]  # slow_warning
             + [visible_radio]  # context_selector
         )
@@ -348,7 +348,7 @@ def add_text(
             states  # states
             + [x.to_gradio_chatbot() for x in states]  # chatbots
             + [CONVERSATION_LIMIT_MSG]  # textbox
-            + [no_change_btn] * 6  # btn_list
+            + [no_change_btn] * 7  # btn_list
             + [""]  # warning
             + [visible_radio]  # context_selector
         )
@@ -368,7 +368,7 @@ def add_text(
         states  # states
         + [x.to_gradio_chatbot() for x in states]  # chatbots
         + [""]  # textbox
-        + [disable_btn] * 6  # btn_list
+        + [disable_btn] * 7  # btn_list
         + [hint_msg]  # slow_warning
         + [visible_radio]  # context_selector
     )
@@ -389,7 +389,7 @@ def bot_response_multi(
         yield (
             [state0, state1]  # states
             + [state0.to_gradio_chatbot(), state1.to_gradio_chatbot()]  # chatbots
-            + [no_change_btn] * 6  # btn_list
+            + [no_change_btn] * 7  # btn_list
         )
         return
 
@@ -446,7 +446,7 @@ def bot_response_multi(
                 stop = False
             except StopIteration:
                 pass
-        yield states + chatbots + [disable_btn] * 6
+        yield states + chatbots + [disable_btn] * 7
         if stop:
             break
 
@@ -577,6 +577,7 @@ def build_side_by_side_ui_anony(models):
         rightvote_btn,
         tie_btn,
         bothbad_btn,
+        disclose_btn,
         regenerate_btn,
         clear_btn,
     ]
@@ -607,7 +608,7 @@ def build_side_by_side_ui_anony(models):
         states + [temperature, top_p, max_output_tokens],
         states + chatbots + btn_list,
     ).then(
-        enable_buttons, [], btn_list + [disclose_btn]
+        enable_buttons, [], btn_list
     )
     clear_btn.click(
         clear_history,
@@ -653,7 +654,7 @@ function (a, b, c, d) {
         states + [temperature, top_p, max_output_tokens],
         states + chatbots + btn_list,
     ).then(
-        enable_buttons, [], btn_list + [disclose_btn]
+        enable_buttons, [], btn_list
     )
 
     send_btn.click(
@@ -665,7 +666,7 @@ function (a, b, c, d) {
         states + [temperature, top_p, max_output_tokens],
         states + chatbots + btn_list,
     ).then(
-        enable_buttons, [], btn_list + [disclose_btn]
+        enable_buttons, [], btn_list
     )
 
     disclose_btn.click(
