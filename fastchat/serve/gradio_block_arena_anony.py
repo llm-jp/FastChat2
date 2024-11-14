@@ -18,6 +18,7 @@ from fastchat.constants import (
     CONVERSATION_TURN_LIMIT,
     SURVEY_LINK,
 )
+from fastchat.serve.gradio_block_arena_named import flash_buttons
 from fastchat.serve.gradio_web_server import (
     State,
     bot_response,
@@ -82,7 +83,15 @@ def vote_last_response(states, vote_type, model_selectors, request: gr.Request):
     gr.Info(
         "🎉 Thanks for voting! Your vote shapes the leaderboard, please vote RESPONSIBLY."
     )
-    yield (disable_btn,) * 4
+
+    if vote_type == "leftvote":
+        context_selector = "Model A"
+    elif vote_type == "rightvote":
+        context_selector = "Model B"
+    else:
+        context_selector = None
+
+    yield (disable_btn,) * 4 + (context_selector,)
 
 
 def leftvote_last_response(
@@ -574,22 +583,22 @@ def build_side_by_side_ui_anony(models):
     leftvote_btn.click(
         leftvote_last_response,
         states + model_selectors,
-        [leftvote_btn, rightvote_btn, tie_btn, bothbad_btn],
+        [leftvote_btn, rightvote_btn, tie_btn, bothbad_btn, context_selector],
     )
     rightvote_btn.click(
         rightvote_last_response,
         states + model_selectors,
-        [leftvote_btn, rightvote_btn, tie_btn, bothbad_btn],
+        [leftvote_btn, rightvote_btn, tie_btn, bothbad_btn, context_selector],
     )
     tie_btn.click(
         tievote_last_response,
         states + model_selectors,
-        [leftvote_btn, rightvote_btn, tie_btn, bothbad_btn],
+        [leftvote_btn, rightvote_btn, tie_btn, bothbad_btn, context_selector],
     )
     bothbad_btn.click(
         bothbad_vote_last_response,
         states + model_selectors,
-        [leftvote_btn, rightvote_btn, tie_btn, bothbad_btn],
+        [leftvote_btn, rightvote_btn, tie_btn, bothbad_btn, context_selector],
     )
     regenerate_btn.click(
         regenerate, states, states + chatbots + [textbox] + btn_list
