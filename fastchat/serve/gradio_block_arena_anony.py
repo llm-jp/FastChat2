@@ -286,12 +286,12 @@ def add_text(
         for i in range(num_sides):
             states[i].skip_next = True
         return (
-            states
-            + [x.to_gradio_chatbot() for x in states]
-            + ["", None]
-            + [no_change_btn]
-            * 6
-            + [""]
+            states  # states
+            + [x.to_gradio_chatbot() for x in states]  # chatbots
+            + [""]  # textbox
+            + [no_change_btn] * 6  # btn_list
+            + [""]  # slow_warning
+            + [invisible_radio]  # context_selector
         )
 
     # Apply the chosen context
@@ -325,14 +325,12 @@ def add_text(
         for i in range(num_sides):
             states[i].skip_next = True
         return (
-            states
-            + [x.to_gradio_chatbot() for x in states]
-            + [CONVERSATION_LIMIT_MSG]
-            + [
-                no_change_btn,
-            ]
-            * 6
-            + [""]
+            states  # states
+            + [x.to_gradio_chatbot() for x in states]  # chatbots
+            + [CONVERSATION_LIMIT_MSG]  # textbox
+            + [no_change_btn] * 6  # btn_list
+            + [""]  # slow_warning
+            + [visible_radio]  # context_selector
         )
 
     text = text[:BLIND_MODE_INPUT_CHAR_LEN_LIMIT]  # Hard cut-off
@@ -346,18 +344,13 @@ def add_text(
         if "deluxe" in states[i].model_name:
             hint_msg = SLOW_MODEL_MSG
     
-    has_context = len(states[0].conv.messages) > 0
-    
     return (
-        states
-        + [x.to_gradio_chatbot() for x in states]
-        + [""]
-        + [
-            disable_btn,
-        ]
-        * 6
-        + [hint_msg]
-        + [visible_radio if has_context else invisible_radio]
+        states  # states
+        + [x.to_gradio_chatbot() for x in states]  # chatbots
+        + [""]  # textbox
+        + [disable_btn] * 6  # btn_list
+        + [hint_msg]  # slow_warning
+        + [visible_radio]  # context_selector
     )
 
 
@@ -374,11 +367,10 @@ def bot_response_multi(
     if state0 is None or state0.skip_next:
         # This generate call is skipped due to invalid inputs
         yield (
-            state0,
-            state1,
-            state0.to_gradio_chatbot(),
-            state1.to_gradio_chatbot(),
-        ) + (no_change_btn,) * 6 + (no_change_radio,)
+            [state0, state1]  # states
+            + [state0.to_gradio_chatbot(), state1.to_gradio_chatbot()]  # chatbots
+            + [no_change_btn] * 6  # btn_list
+        )
         return
 
     states = [state0, state1]
@@ -434,7 +426,7 @@ def bot_response_multi(
                 stop = False
             except StopIteration:
                 pass
-        yield states + chatbots + [disable_btn] * 6 + [no_change_radio]
+        yield states + chatbots + [disable_btn] * 6
         if stop:
             break
 
@@ -638,7 +630,7 @@ function (a, b, c, d) {
     ).then(
         bot_response_multi,
         states + [temperature, top_p, max_output_tokens],
-        states + chatbots + btn_list + [context_selector],
+        states + chatbots + btn_list,
     ).then(
         flash_buttons, [], btn_list
     )
@@ -646,7 +638,7 @@ function (a, b, c, d) {
     send_btn.click(
         add_text,
         states + model_selectors + [textbox] + [context_selector],
-        states + chatbots + [textbox] + btn_list,
+        states + chatbots + [textbox] + btn_list + [slow_warning] + [context_selector],
     ).then(
         bot_response_multi,
         states + [temperature, top_p, max_output_tokens],
