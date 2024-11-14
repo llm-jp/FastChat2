@@ -258,7 +258,7 @@ def add_text(
     model_selector0,
     model_selector1,
     text,
-    selected_model,
+    context_selector,
     request: gr.Request,
 ):
     ip = get_ip(request)
@@ -289,22 +289,21 @@ def add_text(
             states
             + [x.to_gradio_chatbot() for x in states]
             + ["", None]
-            + [
-                no_change_btn,
-            ]
+            + [no_change_btn]
             * 6
             + [""]
         )
 
     # Apply the chosen context
-    if selected_model == "Model A":
-        chosen_context = states[0].conv
-    elif selected_model == "Model B":
-        chosen_context = states[1].conv
-    else:
-        raise ValueError("Invalid model")
-    for i in range(num_sides):
-        states[i].conv = copy.deepcopy(chosen_context)
+    if context_selector:
+        if context_selector == "Model A":
+            chosen_context = states[0].conv.messages
+        elif context_selector == "Model B":
+            chosen_context = states[1].conv.messages
+        else:
+            raise ValueError("Invalid model")
+        for i in range(num_sides):
+            states[i].conv.messages = copy.deepcopy(chosen_context)
 
     # NOTE: We disable moderation check as we use Chatbot Arena for internal testing.
     # model_list = [states[i].model_name for i in range(num_sides)]
@@ -634,21 +633,19 @@ function (a, b, c, d) {
 
     textbox.submit(
         add_text,
-        states + model_selectors + [textbox, context_selector],
+        states + model_selectors + [textbox] + [context_selector],
         states + chatbots + [textbox] + btn_list + [slow_warning] + [context_selector],
     ).then(
         bot_response_multi,
         states + [temperature, top_p, max_output_tokens],
         states + chatbots + btn_list + [context_selector],
     ).then(
-        flash_buttons,
-        [],
-        btn_list,
+        flash_buttons, [], btn_list
     )
 
     send_btn.click(
         add_text,
-        states + model_selectors + [textbox, context_selector],
+        states + model_selectors + [textbox] + [context_selector],
         states + chatbots + [textbox] + btn_list,
     ).then(
         bot_response_multi,
