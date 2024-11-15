@@ -141,11 +141,11 @@ def regenerate(state0, state1, request: gr.Request):
         for i in range(num_sides):
             states[i].conv.update_last_message(None)
         return (
-            states + [x.to_gradio_chatbot() for x in states] + [""] + [disable_btn] * 6
+            states + [x.to_gradio_chatbot() for x in states] + [""] + [disable_btn] * 7
         )
     states[0].skip_next = True
     states[1].skip_next = True
-    return states + [x.to_gradio_chatbot() for x in states] + [""] + [no_change_btn] * 6
+    return states + [x.to_gradio_chatbot() for x in states] + [""] + [no_change_btn] * 7
 
 
 def clear_history(request: gr.Request):
