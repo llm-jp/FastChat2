@@ -84,20 +84,20 @@ def load_demo(url_params, request: gr.Request):
             vision_arena=True,
         )
 
-    single_updates = load_demo_single(models, url_params)
+    # single_updates = load_demo_single(models, url_params)
     side_by_side_anony_updates = load_demo_side_by_side_anony(all_models, url_params)
-    side_by_side_named_updates = load_demo_side_by_side_named(models, url_params)
+    # side_by_side_named_updates = load_demo_side_by_side_named(models, url_params)
 
-    side_by_side_vision_anony_updates = load_demo_side_by_side_vision_anony(
-        all_models, all_vl_models, url_params
-    )
+    # side_by_side_vision_anony_updates = load_demo_side_by_side_vision_anony(
+    #     all_models, all_vl_models, url_params
+    # )
 
     return (
         (gr.Tabs(selected=inner_selected),)
-        + single_updates
+        # + single_updates
         + side_by_side_anony_updates
-        + side_by_side_named_updates
-        + side_by_side_vision_anony_updates
+        # + side_by_side_named_updates
+        # + side_by_side_vision_anony_updates
     )
 
 
