@@ -453,12 +453,12 @@ def bot_response_multi(
 
 def build_side_by_side_ui_anony(models):
     notice_markdown = f"""
-# ⚔️  LLM-jp Chatbot Arena: Benchmarking Japanese LLMs in the Wild
+# ⚔️  LLM-jp Chatbot Arena
 
-## 📜 Rules
-- Ask any question to two anonymous models (e.g., LLM-jp-3, Swallow, Tanuki) and vote for the better one!
-- You can chat for multiple turns until you identify a winner.
-- Votes won't be counted if model identities are revealed during the conversation.
+## 📜 ルール
+- ２つの匿名モデル（例：LLM-jp-3、Swallow、Tanuki）と会話し、どちらの応答がより優れているか投票してください。
+- 会話は複数ターン続けることができます。会話を続けるには、どちらの応答に対して会話を続けるかを選択してください。各モデルは選択された応答を前のターンに生成したものとして、次の応答を生成します。
+- モデル名を表示するには「モデル名を表示」を押して下さい。モデル名を表示すると、会話は終了し、投票できなくなります。
 """
 
     states = [gr.State() for _ in range(num_sides)]
@@ -507,14 +507,14 @@ def build_side_by_side_ui_anony(models):
     
     with gr.Row():
         disclose_btn = gr.Button(
-            value="End the conversation and disclose the model names",
+            value="モデル名を表示（※会話は終了し、投票できなくなります）",
             visible=False,
         )
 
     with gr.Row():
         context_selector = gr.Radio(
             choices=["Model A", "Model B"],
-            label="Select the context in which you would like to continue the conversation",
+            label="会話を続ける応答を選択してください",
             elem_id="context_selector",
             visible=False,
         )
@@ -522,14 +522,14 @@ def build_side_by_side_ui_anony(models):
     with gr.Row():
         textbox = gr.Textbox(
             show_label=False,
-            placeholder="👉 Enter your prompt and press ENTER",
+            placeholder="👉 メッセージを入力し、ENTERを押して下さい",
             elem_id="input_box",
         )
-        send_btn = gr.Button(value="Send", variant="primary", scale=0)
+        send_btn = gr.Button(value="送信", variant="primary", scale=0)
 
     with gr.Row() as button_row:
-        clear_btn = gr.Button(value="🎲 New Round", interactive=False)
-        regenerate_btn = gr.Button(value="🔄  Regenerate", interactive=False)
+        clear_btn = gr.Button(value="🎲 新しく会話を始める", interactive=False)
+        regenerate_btn = gr.Button(value="🔄  もう一度応答を生成する", interactive=False)
         # share_btn = gr.Button(value="📷  Share")
 
     with gr.Accordion("Parameters", open=False, visible=False) as parameter_row:
