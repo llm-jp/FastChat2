@@ -81,7 +81,7 @@ def vote_last_response(states, vote_type, model_selectors, request: gr.Request):
     get_remote_logger().log(data)
 
     gr.Info(
-        "🎉 Thanks for voting! Your vote shapes the leaderboard, please vote RESPONSIBLY."
+        "🎉 投票ありがとうございます！"
     )
 
     if vote_type == "leftvote":
