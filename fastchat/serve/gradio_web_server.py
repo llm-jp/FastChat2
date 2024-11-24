@@ -471,6 +471,8 @@ def bot_response(
         custom_system_prompt = model_api_dict.get("custom_system_prompt", False)
         if not custom_system_prompt:
             conv.set_system_message("")
+        else:
+            conv.set_system_message(custom_system_prompt)
 
         if use_recommended_config:
             recommended_config = model_api_dict.get("recommended_config", None)
