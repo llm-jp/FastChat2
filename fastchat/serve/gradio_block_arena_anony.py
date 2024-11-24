@@ -289,7 +289,7 @@ def add_text(
         ]
 
     if len(text) <= 0:
-        gr.Warning("Enter your prompt")
+        gr.Warning("メッセージを入力してください")
         for i in range(num_sides):
             states[i].skip_next = True
         return (
@@ -302,7 +302,7 @@ def add_text(
         )
 
     if context_selector is None and states[0].conv.messages:
-        gr.Warning("Select the context in which you want to continue the conversation.")
+        gr.Warning("どちらの応答に対して会話を続けるか選択してください")
         for i in range(num_sides):
             states[i].skip_next = True
         return (
@@ -341,7 +341,7 @@ def add_text(
 
     conv = states[0].conv
     if (len(conv.messages) - conv.offset) // 2 >= CONVERSATION_TURN_LIMIT:
-        logger.info(f"conversation turn limit. ip: {get_ip(request)}. text: {text}")
+        logger.info(f"ターン数の限界です ip: {get_ip(request)}. text: {text}")
         for i in range(num_sides):
             states[i].skip_next = True
         return (
@@ -469,7 +469,7 @@ def build_side_by_side_ui_anony(models):
 
     with gr.Group(elem_id="share-region-anony"):
         with gr.Accordion(
-            f"🔍 Expand to see the descriptions of {len(models)} models", open=False
+            f"🔍 対応している {len(models)} 個のモデルのリストを見る", open=False
         ):
             model_description_md = get_model_description_md(models)
             gr.Markdown(model_description_md, elem_id="model_description_markdown")
