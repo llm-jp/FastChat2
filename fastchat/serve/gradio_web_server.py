@@ -57,7 +57,7 @@ enable_text = gr.Textbox(
 disable_text = gr.Textbox(
     interactive=False,
     visible=True,
-    placeholder='Press "🎲 New Round" to start over👇 (Note: Your vote shapes the leaderboard, please vote RESPONSIBLY!)',
+    placeholder='"🎲 新しく会話を始める" を押して下さい',
 )
 no_change_radio = gr.Radio()
 disable_radio = gr.Radio(interactive=False)
@@ -932,6 +932,7 @@ def build_demo(models):
         title="Chat with Open Large Language Models",
         theme=gr.themes.Default(),
         css=block_css,
+        clear_btn=None,
     ) as demo:
         url_params = gr.JSON(visible=False)
 
