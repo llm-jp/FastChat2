@@ -265,6 +265,21 @@ register_model_info(
 )
 
 register_model_info(
+    [
+        "Qwen2.5-0.5B-Instruct",
+        "Qwen2.5-1.5B-Instruct",
+        "Qwen2.5-3B-Instruct",
+        "Qwen2.5-7B-Instruct",
+        "Qwen2.5-14B-Instruct",
+        "Qwen2.5-32B-Instruct",
+        "Qwen2.5-72B-Instruct",
+    ],
+    "Qwen 2.5",
+    "https://qwenlm.github.io/blog/qwen2.5/",
+    "A large language model by Alibaba Cloud",
+)
+
+register_model_info(
     ["glm-4-0520", "glm-4-0116"],
     "GLM-4",
     "https://zhipuai.cn/devday",
@@ -885,4 +900,63 @@ register_model_info(
     "consistency-llm",
     "https://huggingface.co/cllm",
     "consistency-llm is a new generation of parallel decoder LLMs with fast generation speed.",
+)
+
+register_model_info(
+    [
+        "llama-3.2-vision-90b-instruct",
+        "llama-3.2-vision-11b-instruct",
+        "llama-3.2-3b-instruct",
+        "llama-3.2-1b-instruct",
+        "llama-3.1-405b-instruct-bf16",
+        "llama-3.1-405b-instruct-fp8",
+        "llama-3.1-405b-instruct",
+        "llama-3.1-70b-instruct",
+        "llama-3.1-8b-instruct",
+        "Llama-3.1-8B-Instruct",
+    ],
+    "Llama 3.1",
+    "https://llama.meta.com/",
+    "Open foundation and chat models by Meta",
+)
+
+register_model_info(
+    [
+        "llm-jp-3-13b-instruct",
+        "llm-jp-3-3.7b-instruct",
+        "llm-jp-3-1.8b-instruct",
+    ],
+    "LLM-jp-3",
+    "https://huggingface.co/llm-jp",
+    "A Japanese LLM by LLM-jp",
+)
+
+register_model_info(
+    [
+        "Llama-3.1-Swallow-8B-Instruct-v0.2",
+        "Llama-3.1-Swallow-8B-Instruct-v0.1",
+        "Llama-3.1-Swallow-70B-Instruct-v0.1",
+    ],
+    "Llama 3.1 Swallow",
+    "https://huggingface.co/tokyotech-llm",
+    "A Japanese LLM by Institute of Science Tokyo",
+)
+
+register_model_info(
+    [
+        "Tanuki-8B-dpo-v1.0",
+        "Tanuki-8x8B-dpo-v1.0",
+    ],
+    "Tanuki",
+    "https://huggingface.co/weblab-GENIAC",
+    "A Japanese LLM by Matsuo Lab",
+)
+
+register_model_info(
+    [
+        "calm3-22b-chat",
+    ],
+    "CALM 3",
+    "https://huggingface.co/cyberagent",
+    "A Japanese LLM by CyberAgent",
 )
