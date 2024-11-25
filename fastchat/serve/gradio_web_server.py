@@ -799,11 +799,7 @@ We also thank [UC Berkeley SkyLab](https://sky.cs.berkeley.edu/), [Kaggle](https
 def build_single_model_ui(models, add_promotion_links=False):
     promotion = (
         f"""
-[Blog](https://lmsys.org/blog/2023-05-03-arena/) | [GitHub](https://github.com/lm-sys/FastChat) | [Paper](https://arxiv.org/abs/2403.04132) | [Dataset](https://github.com/lm-sys/FastChat/blob/main/docs/dataset_release.md) | [Twitter](https://twitter.com/lmsysorg) | [Discord](https://discord.gg/HSWAKCrnFx) | [Kaggle Competition](https://www.kaggle.com/competitions/lmsys-chatbot-arena)
-
-{SURVEY_LINK}
-
-## 👇 Choose any model to chat
+👇 会話するモデルを選択
 """
         if add_promotion_links
         else ""
@@ -828,7 +824,7 @@ def build_single_model_ui(models, add_promotion_links=False):
             )
         with gr.Row():
             with gr.Accordion(
-                f"🔍 Expand to see the descriptions of {len(models)} models",
+                f"🔍 対応している {len(models)} 個のモデルのリストを見る",
                 open=False,
             ):
                 model_description_md = get_model_description_md(models)
@@ -836,17 +832,16 @@ def build_single_model_ui(models, add_promotion_links=False):
 
         chatbot = gr.Chatbot(
             elem_id="chatbot",
-            label="Scroll down and start chatting",
             height=650,
             show_copy_button=True,
         )
     with gr.Row():
         textbox = gr.Textbox(
             show_label=False,
-            placeholder="👉 Enter your prompt and press ENTER",
+            placeholder="👉 メッセージを入力し、ENTERを押して下さい",
             elem_id="input_box",
         )
-        send_btn = gr.Button(value="Send", variant="primary", scale=0)
+        send_btn = gr.Button(value="送信", variant="primary", scale=0)
 
     with gr.Row() as button_row:
         upvote_btn = gr.Button(value="👍  Upvote", interactive=False)
@@ -855,7 +850,7 @@ def build_single_model_ui(models, add_promotion_links=False):
         regenerate_btn = gr.Button(value="🔄  Regenerate", interactive=False)
         clear_btn = gr.Button(value="🗑️  Clear history", interactive=False)
 
-    with gr.Accordion("Parameters", open=False) as parameter_row:
+    with gr.Accordion("Parameters", open=False, visible=False) as parameter_row:
         temperature = gr.Slider(
             minimum=0.0,
             maximum=1.0,

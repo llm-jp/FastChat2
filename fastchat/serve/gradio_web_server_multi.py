@@ -84,7 +84,7 @@ def load_demo(url_params, request: gr.Request):
             vision_arena=True,
         )
 
-    # single_updates = load_demo_single(models, url_params)
+    single_updates = load_demo_single(models, url_params)
     side_by_side_anony_updates = load_demo_side_by_side_anony(all_models, url_params)
     # side_by_side_named_updates = load_demo_side_by_side_named(models, url_params)
 
@@ -94,7 +94,7 @@ def load_demo(url_params, request: gr.Request):
 
     return (
         (gr.Tabs(selected=inner_selected),)
-        # + single_updates
+        + single_updates
         + side_by_side_anony_updates
         # + side_by_side_named_updates
         # + side_by_side_vision_anony_updates
@@ -147,15 +147,15 @@ window.__gradio_mode__ = "app";
             #     side_by_side_tab.select(None, None, None, js=alert_js)
             #     side_by_side_named_list = build_side_by_side_ui_named(models)
 
-            # with gr.Tab("💬 Direct Chat", id=3) as direct_tab:
-            #     direct_tab.select(None, None, None, js=alert_js)
-            #     single_model_list = build_single_model_ui(
-            #         models, add_promotion_links=True
-            #     )
+            with gr.Tab("💬 Direct Chat", id=3) as direct_tab:
+                direct_tab.select(None, None, None, js=alert_js)
+                single_model_list = build_single_model_ui(
+                    models, add_promotion_links=True
+                )
 
             demo_tabs = (
                 [inner_tabs]
-                # + single_model_list
+                + single_model_list
                 + side_by_side_anony_list
                 # + side_by_side_named_list
             )
