@@ -944,6 +944,15 @@ register_model_info(
 
 register_model_info(
     [
+        "Llama-3-ELYZA-JP-8B",
+    ],
+    "ELYZA",
+    "https://huggingface.co/elyza",
+    "A Japanese LLM by Elyza",
+)
+
+register_model_info(
+    [
         "Tanuki-8B-dpo-v1.0",
         "Tanuki-8x8B-dpo-v1.0",
     ],
