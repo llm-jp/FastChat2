@@ -913,6 +913,7 @@ register_model_info(
         "llama-3.1-405b-instruct",
         "llama-3.1-70b-instruct",
         "llama-3.1-8b-instruct",
+        "Llama-3.1-8B-Instruct",
     ],
     "Llama 3.1",
     "https://llama.meta.com/",
