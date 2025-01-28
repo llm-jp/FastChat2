@@ -1,0 +1,63 @@
+diff --git a/vllm/engine/arg_utils.py b/vllm/engine/arg_utils.py
+index f0b866db..0e14373c 100644
+--- a/vllm/engine/arg_utils.py
++++ b/vllm/engine/arg_utils.py
+@@ -321,7 +321,7 @@ class EngineArgs:
+         parser.add_argument('--block-size',
+                             type=int,
+                             default=EngineArgs.block_size,
+-                            choices=[8, 16, 32],
++                            # choices=[8, 16, 32],
+                             help='Token block size for contiguous chunks of '
+                             'tokens. This is ignored on neuron devices and '
+                             'set to max-model-len')
+diff --git a/vllm/model_executor/model_loader/neuron.py b/vllm/model_executor/model_loader/neuron.py
+index 594ae442..f5f7f5a2 100644
+--- a/vllm/model_executor/model_loader/neuron.py
++++ b/vllm/model_executor/model_loader/neuron.py
+@@ -81,20 +81,31 @@ class NeuronCasualLM(nn.Module):
+         neuronx_module = importlib.import_module(neuronx_module_path)
+         neuronx_model_cls = getattr(neuronx_module, neuronx_model_cls_name)
+
+-        split_model_dir = f"{model_name_or_path}-split"
+-        if _is_pretrained_neuron_checkpoint(model_name_or_path):
+-            split_model_dir = model_name_or_path
+-        elif not os.path.exists(f"{model_name_or_path}-split"):
+-            hf_model_cls = getattr(transformers, hf_model_cls_name)
+-            from transformers_neuronx.module import save_pretrained_split
+-
+-            hf_model = hf_model_cls.from_pretrained(model_name_or_path,
+-                                                    low_cpu_mem_usage=True)
+-            save_pretrained_split(hf_model, f"{model_name_or_path}-split")
+-
+-        self.model = neuronx_model_cls.from_pretrained(split_model_dir,
+-                                                       **kwargs)
+-        self.model.to_neuron()
++        # split_model_dir = f"{model_name_or_path}-split"
++        # if _is_pretrained_neuron_checkpoint(model_name_or_path):
++        #     split_model_dir = model_name_or_path
++        # elif not os.path.exists(f"{model_name_or_path}-split"):
++        #     hf_model_cls = getattr(transformers, hf_model_cls_name)
++        #     from transformers_neuronx.module import save_pretrained_split
++
++        #     hf_model = hf_model_cls.from_pretrained(model_name_or_path,
++        #                                             low_cpu_mem_usage=True)
++        #     save_pretrained_split(hf_model, f"{model_name_or_path}-split")
++
++        # self.model = neuronx_model_cls.from_pretrained(split_model_dir,
++        #                                                **kwargs)
++        self.model = neuronx_model_cls.from_pretrained(model_name_or_path, **kwargs)
++
++        model_neuron_artifacts = f"neuron_models/{model_name_or_path}"
++
++        if not os.path.exists(model_neuron_artifacts):
++            print("compiling & saving the model")
++            self.model.to_neuron()
++            self.model.save(model_neuron_artifacts)
++        else:
++            print("loading the model")
++            self.model.load(model_neuron_artifacts)
++            self.model.to_neuron() # will skip compile
+
+
+ def _is_pretrained_neuron_checkpoint(model_name_or_path: str) -> bool:
