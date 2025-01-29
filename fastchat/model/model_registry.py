@@ -174,6 +174,15 @@ register_model_info(
 )
 
 register_model_info(
+    [
+        "phi-4",
+    ],
+    "Phi-4",
+    "https://techcommunity.microsoft.com/blog/aiplatformblog/introducing-phi-4-microsoft%E2%80%99s-newest-small-language-model-specializing-in-comple/4357090",
+    "A capable and cost-effective small language models (SLMs) by Microsoft",
+)
+
+register_model_info(
     ["reka-core-20240501"],
     "Reka Core",
     "https://www.reka.ai/news/reka-core-our-frontier-class-multimodal-language-model",
@@ -922,6 +931,7 @@ register_model_info(
 
 register_model_info(
     [
+        "llm-jp-3-172b-instruct3",
         "llm-jp-3-13b-instruct",
         "llm-jp-3-3.7b-instruct",
         "llm-jp-3-1.8b-instruct",
