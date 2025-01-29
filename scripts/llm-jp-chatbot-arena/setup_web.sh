@@ -25,3 +25,6 @@ pip3 install --upgrade pip
 pip3 install -e ".[model_worker,webui]" plotly scipy openai
 pip3 install gradio==4.44.1
 
+# SSL
+# sudo apt-get install -y certbot python3-certbot-apache
+# sudo certbot --apache
