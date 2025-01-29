@@ -230,7 +230,7 @@ PRIVATE_SUBNET_ID=$(aws ec2 describe-subnets \
 #### trn1.32xlarge
 
 ```bash
-AMI_ID="ami-07ed48febdc2662fa"
+AMI_ID="ami-033430d109d6d84ff"
 INSTANCE_TYPE="trn1.32xlarge"
 
 INSTANCE_ID=$(aws ec2 run-instances \
@@ -249,7 +249,7 @@ INSTANCE_ID=$(aws ec2 run-instances \
 ### inf2.48xlarge
 
 ```bash
-AMI_ID="ami-07ed48febdc2662fa"
+AMI_ID="ami-033430d109d6d84ff"
 INSTANCE_TYPE="inf2.48xlarge"
 
 INSTANCE_ID=$(aws ec2 run-instances \
@@ -268,7 +268,7 @@ INSTANCE_ID=$(aws ec2 run-instances \
 ### inf2.24xlarge
 
 ```bash
-AMI_ID="ami-07ed48febdc2662fa"
+AMI_ID="ami-033430d109d6d84ff"
 INSTANCE_TYPE="inf2.24xlarge"
 
 INSTANCE_ID=$(aws ec2 run-instances \
