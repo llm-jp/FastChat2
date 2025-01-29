@@ -946,10 +946,20 @@ register_model_info(
         "Llama-3.1-Swallow-8B-Instruct-v0.2",
         "Llama-3.1-Swallow-8B-Instruct-v0.1",
         "Llama-3.1-Swallow-70B-Instruct-v0.1",
+        "Llama-3.1-Swallow-70B-Instruct-v0.3",
     ],
     "Llama 3.1 Swallow",
     "https://huggingface.co/tokyotech-llm",
     "A Japanese LLM by Institute of Science Tokyo",
+)
+
+register_model_info(
+    [
+        "Mistral-Nemo-Japanese-Instruct-2408",
+    ],
+    "Mistral-Nemo-Japanese-Instruct-2408",
+    "https://huggingface.co/cyberagent/Mistral-Nemo-Japanese-Instruct-2408",
+    "A Japanese LLM by Cyber Agent",
 )
 
 register_model_info(
