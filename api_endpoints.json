@@ -1,0 +1,44 @@
+{
+    "llm-jp-3.1-13b-instruct4": {
+        "model_name": "llm-jp/llm-jp-3.1-13b-instruct4",
+        "api_type": "openai",
+        "api_base": "http://10.0.130.47:8000/v1",
+        "api_key": "EMPTY",
+        "anony_only": false,
+        "recommended_config": {
+            "temperature": 0.6,
+            "top_p": 0.9
+        },
+        "text-arena": true,
+        "vision-arena": false,
+    	"custom_system_prompt": "以下は、タスクを説明する指示です。要求を適切に満たす応答を書きなさい。"
+    },
+    "calm3-22b-chat": {
+    	"model_name": "cyberagent/calm3-22b-chat",
+    	"api_type": "openai",
+    	"api_base": "http://10.0.130.47:8001/v1",
+    	"api_key": "EMPTY",
+    	"anony_only": false,
+    	"recommended_config": {
+            "temperature": 0.6,
+            "top_p": 0.9
+    	},
+    	"text-arena": true,
+    	"vision-arena": false,
+        "custom_system_prompt": "あなたは親切なAIアシスタントです。"
+    },
+    "llm-jp-3.1-8x13b-instruct4": {
+        "model_name": "llm-jp-3.1-8x13b-instruct4",
+        "api_type": "openai",
+        "api_base": "http://163.220.177.61/v1",
+        "api_key": "EMPTY",
+        "anony_only": false,
+        "recommended_config": {
+            "temperature": 0.6,
+            "top_p": 0.9
+        },
+        "text-arena": true,
+        "vision-arena": false,
+    	"custom_system_prompt": "以下は、タスクを説明する指示です。要求を適切に満たす応答を書きなさい。"
+    }
+}
