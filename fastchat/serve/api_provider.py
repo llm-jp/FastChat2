@@ -275,6 +275,12 @@ def openai_api_stream_iter(
             messages=messages,
             temperature=temperature,
             max_tokens=max_new_tokens,
+            # For Qwen3
+            extra_body={
+                "chat_template_kwargs": {
+                    "enable_thinking": False,
+                },
+            },
             stream=True,
         )
         text = ""
@@ -292,6 +298,12 @@ def openai_api_stream_iter(
             messages=messages,
             temperature=temperature,
             max_tokens=max_new_tokens,
+            # For Qwen3
+            extra_body={
+                "chat_template_kwargs": {
+                    "enable_thinking": False,
+                },
+            },
             stream=False,
         )
         text = res.choices[0].message.content
