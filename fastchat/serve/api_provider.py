@@ -267,6 +267,17 @@ def openai_api_stream_iter(
         "top_p": top_p,
         "max_new_tokens": max_new_tokens,
     }
+    kwargs = {}
+    if "Qwen3" in model_name:
+        kwargs = {
+            "extra_body": {
+                "chat_template_kwargs": {
+                    "enable_thinking": False,
+                },
+            }
+        }
+    if kwargs:
+        gen_params.update(kwargs)
     logger.info(f"==== request ====\n{gen_params}")
 
     if stream:
@@ -275,13 +286,8 @@ def openai_api_stream_iter(
             messages=messages,
             temperature=temperature,
             max_tokens=max_new_tokens,
-            # For Qwen3
-            extra_body={
-                "chat_template_kwargs": {
-                    "enable_thinking": False,
-                },
-            },
             stream=True,
+            **kwargs,
         )
         text = ""
         for chunk in res:
@@ -298,13 +304,8 @@ def openai_api_stream_iter(
             messages=messages,
             temperature=temperature,
             max_tokens=max_new_tokens,
-            # For Qwen3
-            extra_body={
-                "chat_template_kwargs": {
-                    "enable_thinking": False,
-                },
-            },
             stream=False,
+            **kwargs,
         )
         text = res.choices[0].message.content
         pos = 0
