@@ -973,6 +973,15 @@ register_model_info(
 
 register_model_info(
     [
+        "Gemma-2-Llama-Swallow-9b-it-v0.1",
+    ],
+    "Gemma-2-Llama Swallow",
+    "https://huggingface.co/tokyotech-llm",
+    "A Japanese LLM by Institute of Science Tokyo",
+)
+
+register_model_info(
+    [
         "Mistral-Nemo-Japanese-Instruct-2408",
     ],
     "Mistral-Nemo-Japanese-Instruct-2408",
