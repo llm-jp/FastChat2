@@ -311,6 +311,16 @@ class Conversation:
                 else:
                     ret += role + ":"
             return ret
+        elif self.sep_style == SeparatorStyle.PHI4:
+            ret = ""
+            if self.system_message:
+                ret += system_prompt + "\n"
+            for i, (role, message) in enumerate(self.mesages):
+                if message:
+                    ret += f"<|im_start|>{role}<|im_sep|>\n{message.strip()}<|im_end|>\n"
+                else:
+                    ret += f"<|im_start|>{role}<|im_sep|>\n"
+            return ret
         elif self.sep_style == SeparatorStyle.DEFAULT:
             ret = system_prompt + "\n"
             for role, message in self.messages:
@@ -2130,6 +2140,19 @@ register_conv_template(
     )
 )
 
+# Phi-4
+register_conv_template(
+    Conversation(
+        name="phi-4",
+        system_template="<|im_start|>system<|im_sep|>\n{system_message}",
+        system_message="You are a helpful assistant.",
+        roles=("<|im_start|>user<|im_sep|>", "<|im_start|>assistant<|im_sep|>"),
+        sep_style=SeparatorStyle.CHATML,
+        sep="<|im_end|>",
+        stop_str="<|im_end|>",
+    )
+)
+
 register_conv_template(
     Conversation(
         name="yandexgpt",
@@ -2192,6 +2215,14 @@ if __name__ == "__main__":
 
     print("-- Tankuki template --")
     conv = get_conv_template("tanuki")
+    conv.append_message(conv.roles[0], "Hello!")
+    conv.append_message(conv.roles[1], "Hi!")
+    conv.append_message(conv.roles[0], "How are you?")
+    conv.append_message(conv.roles[1], None)
+    print(conv.get_prompt())
+
+    print("-- Phi-4 template --")
+    conv = get_conv_template("phi-4")
     conv.append_message(conv.roles[0], "Hello!")
     conv.append_message(conv.roles[1], "Hi!")
     conv.append_message(conv.roles[0], "How are you?")

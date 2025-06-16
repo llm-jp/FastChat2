@@ -989,3 +989,12 @@ register_model_info(
     "https://huggingface.co/cyberagent",
     "A Japanese LLM by CyberAgent",
 )
+
+register_model_info(
+    [
+        "phi-4",
+    ],
+    "Phi-4",
+    "https://huggingface.co/microsoft/phi-4",
+    "A 14B parameter LM developed by Microsoft Research",
+)

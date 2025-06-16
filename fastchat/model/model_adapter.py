@@ -2493,6 +2493,16 @@ class Calm3Adapter(BaseModelAdapter):
         return get_conv_template("calm3")
 
 
+class Phi4Adapter(BaseModelAdapter):
+    """The model adapter for Phi-4"""
+
+    def match(self, model_path: str):
+        return "phi-4" in model_path.lower()
+
+    def get_default_conv_template(self, model_path: str) -> Conversation:
+        return get_conv_template("phi-4")
+
+
 # Note: the registration order matters.
 # The one registered earlier has a higher matching priority.
 register_model_adapter(PeftModelAdapter)
@@ -2587,7 +2597,6 @@ register_model_adapter(YuanAdapter)
 register_model_adapter(OlmoAdapter)
 register_model_adapter(CohereAdapter)
 register_model_adapter(DBRXAdapter)
-register_model_adapter(GemmaAdapter)
 register_model_adapter(YandexGPTAdapter)
 register_model_adapter(CllmAdapter)
 register_model_adapter(RekaAdapter)
@@ -2596,6 +2605,7 @@ register_model_adapter(Llama3Adapter)
 register_model_adapter(Llmjp3Adapter)
 register_model_adapter(TankukiAdapter)
 register_model_adapter(Calm3Adapter)
+register_model_adapter(Phi4Adapter)
 
 # After all adapters, try the default base adapter.
 register_model_adapter(BaseModelAdapter)
