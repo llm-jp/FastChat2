@@ -63,6 +63,13 @@ register_model_info(
 )
 
 register_model_info(
+    ["gemma-3-27b-it"],
+    "Gemma 3",
+    "https://ai.google.dev/gemma",
+    "Gemma 3 by Google",
+)
+
+register_model_info(
     [
         "gemini-1.5-pro-api-0409-preview",
         "gemini-1.5-pro-tuned",
@@ -107,6 +114,15 @@ register_model_info(
     "Qwen Max",
     "https://help.aliyun.com/zh/dashscope/developer-reference/model-introduction",
     "The Frontier Qwen Model by Alibaba",
+)
+
+register_model_info(
+    [
+        "Qwen3-32B",
+    ],
+    "Qwen 3",
+    "https://qwenlm.github.io/blog/qwen3/",
+    "An LLM by Alibaba",
 )
 
 register_model_info(
@@ -931,6 +947,8 @@ register_model_info(
 
 register_model_info(
     [
+        "llm-jp-3.1-8x13b-instruct4",
+        "llm-jp-3.1-13b-instruct4",
         "llm-jp-3-172b-instruct3",
         "llm-jp-3-13b-instruct",
         "llm-jp-3-3.7b-instruct",
