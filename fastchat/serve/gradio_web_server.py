@@ -744,13 +744,13 @@ def get_model_description_md(models):
 | ---- | ---- | ---- |
 """
     ct = 0
-    visited = set()
+    # visited = set()
     for i, name in enumerate(models):
         minfo = get_model_info(name)
-        if minfo.simple_name in visited:
-            continue
-        visited.add(minfo.simple_name)
-        one_model_md = f"[{minfo.simple_name}]({minfo.link}): {minfo.description}"
+        # if minfo.simple_name in visited:
+        #     continue
+        # visited.add(minfo.simple_name)
+        one_model_md = f"[{minfo.name}]({minfo.link}): {minfo.description}"
 
         if ct % 3 == 0:
             model_description_md += "|"
