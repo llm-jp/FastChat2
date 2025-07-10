@@ -300,18 +300,15 @@ def iter_over_async(
 
 def detect_language(text: str) -> str:
     """Detect the langauge of a string."""
-    import polyglot  # pip3 install polyglot pyicu pycld2
-    from polyglot.detect import Detector
-    from polyglot.detect.base import logger as polyglot_logger
-    import pycld2
+    # from langdetect import detect
 
-    polyglot_logger.setLevel("ERROR")
-
-    try:
-        lang_code = Detector(text).language.name
-    except (pycld2.error, polyglot.detect.base.UnknownLanguage):
-        lang_code = "unknown"
-    return lang_code
+    # try:
+    #     lang_code = detect(text)
+    # except Exception as e:
+    #     logging.warning(f"Language detection failed: {e}. Defaulting to 'unknown'.")
+    #     lang_code = "unknown"
+    # return lang_code
+    return "unknown"
 
 
 def parse_gradio_auth_creds(filename: str):

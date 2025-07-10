@@ -82,12 +82,9 @@ leader_component_values = [None] * 5
 
 
 def make_default_md_1(mirror=False):
-    link_color = "#1976D2"  # This color should be clear in both light and dark mode
     leaderboard_md = f"""
-    # 🏆 Chatbot Arena Leaderboard 
-    [Blog](https://lmsys.org/blog/2023-05-03-arena/) | [GitHub](https://github.com/lm-sys/FastChat) | [Paper](https://arxiv.org/abs/2403.04132) | [Dataset](https://github.com/lm-sys/FastChat/blob/main/docs/dataset_release.md) | [Twitter](https://twitter.com/lmsysorg) | [Discord](https://discord.gg/HSWAKCrnFx) | [Kaggle Competition](https://www.kaggle.com/competitions/lmsys-chatbot-arena)
+    # 🏆 LLM-jp Chatbot Arena リーダーボード
     """
-
     return leaderboard_md
 
 
@@ -96,8 +93,9 @@ def make_default_md_2(mirror=False):
     leaderboard_md = f"""
 {mirror_str if mirror else ""}
 
-Chatbot Arena is a crowdsourced open platform for LLM evals. We've collected over 1,000,000 human pairwise comparisons to rank LLMs with the Bradley-Terry model and display the model ratings in Elo-scale.
-You can find more details in our paper. **Chatbot arena is dependent on community participation, please contribute by casting your vote!**
+LLM-jp Chatbot Arena は、日本語 LLM を評価するためのプラットフォームです。
+ユーザから収集した2つの LLM の応答のうちどちらが優れているかの投票に基づき、LLM の性能のランキングを行います。
+**LLM-jp Chatbot Arena はユーザの投票に支えられています。投票へのご協力よろしくお願いいたします。**
 
 {SURVEY_LINK}
 """
@@ -111,11 +109,11 @@ def make_arena_leaderboard_md(arena_df, last_updated_time, vision=False):
     space = "&nbsp;&nbsp;&nbsp;"
 
     leaderboard_md = f"""
-Total #models: **{total_models}**.{space} Total #votes: **{"{:,}".format(total_votes)}**.{space} Last updated: {last_updated_time}.
+モデル数: **{total_models}**.{space} 投票数: **{"{:,}".format(total_votes)}**.{space} 最終更新: {last_updated_time}.
 """
 
     leaderboard_md += f"""
-Code to recreate leaderboard tables and plots in this [notebook]({notebook_url}). You can contribute your vote at [lmarena.ai](https://lmarena.ai)!
+[LLM-jp Chatbot Arena](https://chatbot-arena.apps.llmc.nii.ac.jp/) での投票によってレートが変動します。投票へのご協力よろしくお願いいたします。
 """
     return leaderboard_md
 

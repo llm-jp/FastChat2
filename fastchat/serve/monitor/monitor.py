@@ -519,24 +519,24 @@ def build_arena_tab(
 
     md = make_arena_leaderboard_md(arena_df, last_updated_time, vision=vision)
     gr.Markdown(md, elem_id="leaderboard_markdown")
-    with gr.Row():
-        with gr.Column(scale=2):
-            category_dropdown = gr.Dropdown(
-                choices=list(arena_dfs.keys()),
-                label="Category",
-                value="Overall",
-            )
-        with gr.Column(scale=2):
-            category_checkbox = gr.CheckboxGroup(
-                ["Style Control", "Show Deprecate"], label="Apply filter", info=""
-            )
-        default_category_details = make_category_arena_leaderboard_md(
-            arena_df, arena_df, name="Overall"
-        )
-        with gr.Column(scale=4, variant="panel"):
-            category_deets = gr.Markdown(
-                default_category_details, elem_id="category_deets"
-            )
+    # with gr.Row():
+    #     with gr.Column(scale=2):
+    #         category_dropdown = gr.Dropdown(
+    #             choices=list(arena_dfs.keys()),
+    #             label="Category",
+    #             value="Overall",
+    #         )
+    #     with gr.Column(scale=2):
+    #         category_checkbox = gr.CheckboxGroup(
+    #             ["Style Control", "Show Deprecate"], label="Apply filter", info=""
+    #         )
+    #     default_category_details = make_category_arena_leaderboard_md(
+    #         arena_df, arena_df, name="Overall"
+    #     )
+    #     with gr.Column(scale=4, variant="panel"):
+    #         category_deets = gr.Markdown(
+    #             default_category_details, elem_id="category_deets"
+    #         )
 
     arena_vals = pd.DataFrame(
         arena_table_vals,
@@ -582,11 +582,7 @@ def build_arena_tab(
 
     gr.Markdown(
         f"""
-***Rank (UB)**: model's ranking (upper-bound), defined by one + the number of models that are statistically better than the target model.
-Model A is statistically better than model B when A's lower-bound score is greater than B's upper-bound score (in 95% confidence interval).
-See Figure 1 below for visualization of the confidence intervals of model scores.
-
-Note: in each category, we exclude models with fewer than 300 votes as their confidence intervals can be large.
+***Rank (UB)**: ランキングの上限値（Upper Bound）です。「1 + 対象モデルより統計的に優れているモデルの数」として定義されます。95%信頼区間におけるモデルAのスコアの下限値がモデルBのスコアの上限値より大きいとき、AがBより統計的に優れているとします。
 """,
         elem_id="leaderboard_markdown",
     )
@@ -595,6 +591,12 @@ Note: in each category, we exclude models with fewer than 300 votes as their con
         # only live update the text tab
         leader_component_values[:] = [default_md, p1, p2, p3, p4]
 
+    # Inigialize plot_{1,2,3,4} and more_stats_md as empty components
+    plot_1 = gr.Plot(visible=False)
+    plot_2 = gr.Plot(visible=False)
+    plot_3 = gr.Plot(visible=False)
+    plot_4 = gr.Plot(visible=False)
+    more_stats_md = gr.Markdown(visible=False)
     if show_plot:
         more_stats_md = gr.Markdown(
             f"""## More Statistics for Chatbot Arena (Overall)""",
@@ -626,33 +628,33 @@ Note: in each category, we exclude models with fewer than 300 votes as their con
                     elem_id="plot-title",
                 )
                 plot_2 = gr.Plot(p2, show_label=False)
-    category_dropdown.change(
-        update_leaderboard_and_plots,
-        inputs=[category_dropdown, category_checkbox],
-        outputs=[
-            elo_display_df,
-            plot_1,
-            plot_2,
-            plot_3,
-            plot_4,
-            more_stats_md,
-            category_deets,
-        ],
-    )
+    # category_dropdown.change(
+    #     update_leaderboard_and_plots,
+    #     inputs=[category_dropdown, category_checkbox],
+    #     outputs=[
+    #         elo_display_df,
+    #         plot_1,
+    #         plot_2,
+    #         plot_3,
+    #         plot_4,
+    #         more_stats_md,
+    #         category_deets,
+    #     ],
+    # )
 
-    category_checkbox.change(
-        update_leaderboard_and_plots,
-        inputs=[category_dropdown, category_checkbox],
-        outputs=[
-            elo_display_df,
-            plot_1,
-            plot_2,
-            plot_3,
-            plot_4,
-            more_stats_md,
-            category_deets,
-        ],
-    )
+    # category_checkbox.change(
+    #     update_leaderboard_and_plots,
+    #     inputs=[category_dropdown, category_checkbox],
+    #     outputs=[
+    #         elo_display_df,
+    #         plot_1,
+    #         plot_2,
+    #         plot_3,
+    #         plot_4,
+    #         more_stats_md,
+    #         category_deets,
+    #     ],
+    # )
     return [plot_1, plot_2, plot_3, plot_4]
 
 
@@ -825,7 +827,7 @@ def get_combined_table(elo_results, model_table_df):
 def build_leaderboard_tab(
     elo_results_file,
     leaderboard_table_file,
-    arena_hard_leaderboard,
+    arena_hard_leaderboard=None,
     show_plot=False,
     mirror=False,
 ):
@@ -848,8 +850,8 @@ def build_leaderboard_tab(
     with gr.Row():
         with gr.Column(scale=4):
             md_1 = gr.Markdown(default_md, elem_id="leaderboard_markdown")
-        with gr.Column(scale=1):
-            vote_button = gr.Button("Vote!", link="https://lmarena.ai")
+        # with gr.Column(scale=1):
+        #     vote_button = gr.Button("Vote!", link="https://lmarena.ai")
     md2 = gr.Markdown(default_md_2, elem_id="leaderboard_markdown")
     if leaderboard_table_file:
         data = load_leaderboard_table_csv(leaderboard_table_file)
@@ -863,129 +865,136 @@ def build_leaderboard_tab(
                     default_md,
                     show_plot=show_plot,
                 )
-            with gr.Tab("📣 NEW: Overview", id=1):
-                gr.Markdown(
-                    f"""
-                    <div style="text-align: center; font-weight: bold;">
-                        For a more holistic comparison, we've updated the leaderboard to show model rank (UB) across tasks and languages. Check out the 'Arena' tab for more categories, statistics, and model info.
-                    </div>
-                    """,
-                )
-                last_updated_time = elo_results_text["full"][
-                    "last_updated_datetime"
-                ].split(" ")[0]
-                gr.Markdown(
-                    make_arena_leaderboard_md(
-                        elo_results_text["full"]["leaderboard_table_df"],
-                        last_updated_time,
-                    ),
-                    elem_id="leaderboard_markdown",
-                )
-                combined_table = get_combined_table(elo_results_text, model_table_df)
-                build_category_leaderboard_tab(
-                    combined_table,
-                    "Task",
-                    selected_categories,
-                    selected_categories_width,
-                )
-                build_category_leaderboard_tab(
-                    combined_table,
-                    "Language",
-                    language_categories,
-                    language_categories_width,
-                )
-                gr.Markdown(
-                    f"""
-            ***Rank (UB)**: model's ranking (upper-bound), defined by one + the number of models that are statistically better than the target model.
-            Model A is statistically better than model B when A's lower-bound score is greater than B's upper-bound score (in 95% confidence interval).
-            See Figure 1 below for visualization of the confidence intervals of model scores.
+            
+            # Do not support overview for now
+            # with gr.Tab("📣 NEW: Overview", id=1):
+            #     gr.Markdown(
+            #         f"""
+            #         <div style="text-align: center; font-weight: bold;">
+            #             For a more holistic comparison, we've updated the leaderboard to show model rank (UB) across tasks and languages. Check out the 'Arena' tab for more categories, statistics, and model info.
+            #         </div>
+            #         """,
+            #     )
+            #     last_updated_time = elo_results_text["full"][
+            #         "last_updated_datetime"
+            #     ].split(" ")[0]
+            #     gr.Markdown(
+            #         make_arena_leaderboard_md(
+            #             elo_results_text["full"]["leaderboard_table_df"],
+            #             last_updated_time,
+            #         ),
+            #         elem_id="leaderboard_markdown",
+            #     )
+            #     combined_table = get_combined_table(elo_results_text, model_table_df)
+            #     build_category_leaderboard_tab(
+            #         combined_table,
+            #         "Task",
+            #         selected_categories,
+            #         selected_categories_width,
+            #     )
+            #     build_category_leaderboard_tab(
+            #         combined_table,
+            #         "Language",
+            #         language_categories,
+            #         language_categories_width,
+            #     )
+            #     gr.Markdown(
+            #         f"""
+            # ***Rank (UB)**: model's ranking (upper-bound), defined by one + the number of models that are statistically better than the target model.
+            # Model A is statistically better than model B when A's lower-bound score is greater than B's upper-bound score (in 95% confidence interval).
+            # See Figure 1 below for visualization of the confidence intervals of model scores.
 
-            Note: in each category, we exclude models with fewer than 300 votes as their confidence intervals can be large.
-            """,
-                    elem_id="leaderboard_markdown",
-                )
-            with gr.Tab("Arena (Vision)", id=2):
-                build_arena_tab(
-                    elo_results_vision,
-                    model_table_df,
-                    default_md,
-                    vision=True,
-                    show_plot=show_plot,
-                )
-            if arena_hard_leaderboard is not None:
-                with gr.Tab("Arena-Hard-Auto", id=3):
-                    dataFrame = arena_hard_process(
-                        leaderboard_table_file, arena_hard_leaderboard
-                    )
-                    date = dataFrame["date"][0]
-                    dataFrame = dataFrame.drop(
-                        columns=["rating_q025", "rating_q975", "date"]
-                    )
-                    dataFrame["CI"] = dataFrame.CI.map(ast.literal_eval)
-                    dataFrame["CI"] = dataFrame.CI.map(lambda x: f"+{x[1]}/-{x[0]}")
-                    dataFrame = dataFrame.rename(
-                        columns={
-                            "model": "Model",
-                            "score": "Win-rate",
-                            "CI": "95% CI",
-                            "avg_tokens": "Average Tokens",
-                        }
-                    )
-                    model_to_score = {}
-                    for i in range(len(dataFrame)):
-                        model_to_score[dataFrame.loc[i, "Model"]] = dataFrame.loc[
-                            i, "Win-rate"
-                        ]
-                    md = arena_hard_title(date)
-                    gr.Markdown(md, elem_id="leaderboard_markdown")
-                    gr.DataFrame(
-                        dataFrame,
-                        datatype=[
-                            "markdown" if col == "Model" else "str"
-                            for col in dataFrame.columns
-                        ],
-                        elem_id="arena_hard_leaderboard",
-                        height=800,
-                        wrap=True,
-                        column_widths=[70, 190, 80, 80, 90, 150],
-                    )
+            # Note: in each category, we exclude models with fewer than 300 votes as their confidence intervals can be large.
+            # """,
+            #         elem_id="leaderboard_markdown",
+            #     )
 
-            with gr.Tab("Full Leaderboard", id=4):
-                build_full_leaderboard_tab(
-                    elo_results_text, model_table_df, model_to_score
-                )
+            # Kiyomaru: Do not support vision for now
+            # with gr.Tab("Arena (Vision)", id=2):
+            #     build_arena_tab(
+            #         elo_results_vision,
+            #         model_table_df,
+            #         default_md,
+            #         vision=True,
+            #         show_plot=show_plot,
+            #     )
 
-        if not show_plot:
-            gr.Markdown(
-                """ ## Visit our [HF space](https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard) for more analysis!
-                If you want to see more models, please help us [add them](https://github.com/lm-sys/FastChat/blob/main/docs/arena.md#how-to-add-a-new-model).
-                """,
-                elem_id="leaderboard_markdown",
-            )
+            # Do not support full leaderboard for now
+            # model_to_score = {}
+            # if arena_hard_leaderboard is not None:
+            #     with gr.Tab("Arena-Hard-Auto", id=3):
+            #         dataFrame = arena_hard_process(
+            #             leaderboard_table_file, arena_hard_leaderboard
+            #         )
+            #         date = dataFrame["date"][0]
+            #         dataFrame = dataFrame.drop(
+            #             columns=["rating_q025", "rating_q975", "date"]
+            #         )
+            #         dataFrame["CI"] = dataFrame.CI.map(ast.literal_eval)
+            #         dataFrame["CI"] = dataFrame.CI.map(lambda x: f"+{x[1]}/-{x[0]}")
+            #         dataFrame = dataFrame.rename(
+            #             columns={
+            #                 "model": "Model",
+            #                 "score": "Win-rate",
+            #                 "CI": "95% CI",
+            #                 "avg_tokens": "Average Tokens",
+            #             }
+            #         )
+            #         for i in range(len(dataFrame)):
+            #             model_to_score[dataFrame.loc[i, "Model"]] = dataFrame.loc[
+            #                 i, "Win-rate"
+            #             ]
+            #         md = arena_hard_title(date)
+            #         gr.Markdown(md, elem_id="leaderboard_markdown")
+            #         gr.DataFrame(
+            #             dataFrame,
+            #             datatype=[
+            #                 "markdown" if col == "Model" else "str"
+            #                 for col in dataFrame.columns
+            #             ],
+            #             elem_id="arena_hard_leaderboard",
+            #             height=800,
+            #             wrap=True,
+            #             column_widths=[70, 190, 80, 80, 90, 150],
+            #         )
+
+            # with gr.Tab("Full Leaderboard", id=4):
+            #     build_full_leaderboard_tab(
+            #         elo_results_text, model_table_df, model_to_score
+            #     )
+
+        # if not show_plot:
+        #     gr.Markdown(
+        #         """ ## Visit our [HF space](https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard) for more analysis!
+        #         If you want to see more models, please help us [add them](https://github.com/lm-sys/FastChat/blob/main/docs/arena.md#how-to-add-a-new-model).
+        #         """,
+        #         elem_id="leaderboard_markdown",
+        #     )
     else:
         pass
 
-    from fastchat.serve.gradio_web_server import acknowledgment_md
+    # from fastchat.serve.gradio_web_server import acknowledgment_md
 
-    with gr.Accordion(
-        "Citation",
-        open=True,
-    ):
-        citation_md = """
-            ### Citation
-            Please cite the following paper if you find our leaderboard or dataset helpful.
-            ```
-            @misc{chiang2024chatbot,
-                title={Chatbot Arena: An Open Platform for Evaluating LLMs by Human Preference},
-                author={Wei-Lin Chiang and Lianmin Zheng and Ying Sheng and Anastasios Nikolas Angelopoulos and Tianle Li and Dacheng Li and Hao Zhang and Banghua Zhu and Michael Jordan and Joseph E. Gonzalez and Ion Stoica},
-                year={2024},
-                eprint={2403.04132},
-                archivePrefix={arXiv},
-                primaryClass={cs.AI}
-            }
-            """
-        gr.Markdown(citation_md, elem_id="leaderboard_markdown")
-        gr.Markdown(acknowledgment_md, elem_id="ack_markdown")
+    # Kiyomaru: Do not support citation for now
+    # with gr.Accordion(
+    #     "Citation",
+    #     open=True,
+    # ):
+    #     citation_md = """
+    #         ### Citation
+    #         Please cite the following paper if you find our leaderboard or dataset helpful.
+    #         ```
+    #         @misc{chiang2024chatbot,
+    #             title={Chatbot Arena: An Open Platform for Evaluating LLMs by Human Preference},
+    #             author={Wei-Lin Chiang and Lianmin Zheng and Ying Sheng and Anastasios Nikolas Angelopoulos and Tianle Li and Dacheng Li and Hao Zhang and Banghua Zhu and Michael Jordan and Joseph E. Gonzalez and Ion Stoica},
+    #             year={2024},
+    #             eprint={2403.04132},
+    #             archivePrefix={arXiv},
+    #             primaryClass={cs.AI}
+    #         }
+    #         """
+    #     gr.Markdown(citation_md, elem_id="leaderboard_markdown")
+    #     gr.Markdown(acknowledgment_md, elem_id="ack_markdown")
 
     return [md_1] + gr_plots
 
