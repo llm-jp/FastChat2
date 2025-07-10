@@ -52,12 +52,12 @@ enable_btn = gr.Button(interactive=True, visible=True)
 disable_btn = gr.Button(interactive=False)
 invisible_btn = gr.Button(interactive=False, visible=False)
 enable_text = gr.Textbox(
-    interactive=True, visible=True, placeholder="👉 Enter your prompt and press ENTER"
+    interactive=True, visible=True, placeholder="👉 メッセージを入力して送信を押して下さい"
 )
 disable_text = gr.Textbox(
     interactive=False,
     visible=True,
-    placeholder='"🎲 新しく会話を始める" を押して下さい',
+    placeholder='「🎲 はじめから」を押して下さい',
 )
 no_change_radio = gr.Radio()
 disable_radio = gr.Radio(interactive=False)
