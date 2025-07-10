@@ -85,9 +85,9 @@ def vote_last_response(states, vote_type, model_selectors, request: gr.Request):
     )
 
     if vote_type == "leftvote":
-        context_selector = "Model A"
+        context_selector = "モデル A"
     elif vote_type == "rightvote":
-        context_selector = "Model B"
+        context_selector = "モデル B"
     else:
         context_selector = None
 
@@ -173,7 +173,7 @@ def share_click(state0, state1, model_selector0, model_selector1, request: gr.Re
 
 def disclose_models(state0, state1):
     return (
-        [f"### Model A: {state0.model_name}", f"### Model B: {state1.model_name}"]  # model_selectors
+        [f"### モデル A: {state0.model_name}", f"### モデル B: {state1.model_name}"]  # model_selectors
         +[disable_text]  # textbox
         + [disable_btn] * 4  # vote buttons
         + [disable_btn]  # send_btn
@@ -316,9 +316,9 @@ def add_text(
 
     # Apply the chosen context
     if context_selector:
-        if context_selector == "Model A":
+        if context_selector == "モデル A":
             chosen_context = states[0].conv.messages
-        elif context_selector == "Model B":
+        elif context_selector == "モデル B":
             chosen_context = states[1].conv.messages
         else:
             raise ValueError("Invalid model")
@@ -455,8 +455,8 @@ def build_side_by_side_ui_anony(models):
     notice_markdown = f"""
 # ⚔️  LLM-jp Chatbot Arena
 
-## 📜 ルール
-- ２つの匿名モデルと会話し、より優れていると思う応答に投票してください。
+## 📜 使い方
+- 2つの匿名モデルと会話し、より優れていると思う応答に投票してください。
 - 会話は複数ターン続けることができます。会話を続けるには、どちらの応答に対して会話を続けるかを選択してください。各モデルは選択された応答を前のターンに生成したものとして、次の応答を生成します。
 - モデル名を表示するには「モデル名を表示」を押して下さい。モデル名を表示すると、会話は終了し、投票できなくなります。
 """
@@ -475,7 +475,7 @@ def build_side_by_side_ui_anony(models):
             gr.Markdown(model_description_md, elem_id="model_description_markdown")
         with gr.Row():
             for i in range(num_sides):
-                label = "Model A" if i == 0 else "Model B"
+                label = "モデル A" if i == 0 else "モデル B"
                 with gr.Column():
                     chatbots[i] = gr.Chatbot(
                         label=label,
@@ -513,7 +513,7 @@ def build_side_by_side_ui_anony(models):
 
     with gr.Row():
         context_selector = gr.Radio(
-            choices=["Model A", "Model B"],
+            choices=["モデル A", "モデル B"],
             label="会話を続ける応答を選択してください",
             elem_id="context_selector",
             visible=False,
@@ -522,14 +522,14 @@ def build_side_by_side_ui_anony(models):
     with gr.Row():
         textbox = gr.Textbox(
             show_label=False,
-            placeholder="👉 メッセージを入力し、ENTERを押して下さい",
+            placeholder="👉 メッセージを入力して送信を押して下さい",
             elem_id="input_box",
         )
         send_btn = gr.Button(value="送信", variant="primary", scale=0)
 
     with gr.Row() as button_row:
-        clear_btn = gr.Button(value="🎲 新しく会話を始める", interactive=False)
-        regenerate_btn = gr.Button(value="🔄  もう一度応答を生成する", interactive=False)
+        clear_btn = gr.Button(value="🎲 はじめから", interactive=False)
+        regenerate_btn = gr.Button(value="🔄  もう一度生成", interactive=False)
         # share_btn = gr.Button(value="📷  Share")
 
     with gr.Accordion("Parameters", open=False, visible=False) as parameter_row:

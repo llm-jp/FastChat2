@@ -841,17 +841,17 @@ def build_single_model_ui(models, add_promotion_links=False):
     with gr.Row():
         textbox = gr.Textbox(
             show_label=False,
-            placeholder="👉 メッセージを入力し、ENTERを押して下さい",
+            placeholder="👉 メッセージを入力して送信を押して下さい",
             elem_id="input_box",
         )
         send_btn = gr.Button(value="送信", variant="primary", scale=0)
 
     with gr.Row() as button_row:
-        upvote_btn = gr.Button(value="👍  Upvote", interactive=False)
-        downvote_btn = gr.Button(value="👎  Downvote", interactive=False)
-        flag_btn = gr.Button(value="⚠️  Flag", interactive=False)
-        regenerate_btn = gr.Button(value="🔄  Regenerate", interactive=False)
-        clear_btn = gr.Button(value="🗑️  Clear history", interactive=False)
+        upvote_btn = gr.Button(value="👍  良い", interactive=False)
+        downvote_btn = gr.Button(value="👎  悪い", interactive=False)
+        flag_btn = gr.Button(value="⚠️  問題あり", interactive=False)
+        regenerate_btn = gr.Button(value="🔄  もう一度生成", interactive=False)
+        clear_btn = gr.Button(value="🗑️  はじめから", interactive=False)
 
     with gr.Accordion("Parameters", open=False, visible=False) as parameter_row:
         temperature = gr.Slider(

@@ -139,7 +139,7 @@ window.__gradio_mode__ = "app";
                         random_questions=args.random_questions,
                     )
             else:
-                with gr.Tab("⚔️ Arena (battle)", id=0) as arena_tab:
+                with gr.Tab("⚔️ LLM-jp Chatbot Arena", id=0) as arena_tab:
                     arena_tab.select(None, None, None, js=load_js)
                     side_by_side_anony_list = build_side_by_side_ui_anony(models)
 
@@ -147,7 +147,7 @@ window.__gradio_mode__ = "app";
             #     side_by_side_tab.select(None, None, None, js=alert_js)
             #     side_by_side_named_list = build_side_by_side_ui_named(models)
 
-            with gr.Tab("💬 Direct Chat", id=3) as direct_tab:
+            with gr.Tab("💬 チャット", id=3) as direct_tab:
                 direct_tab.select(None, None, None, js=alert_js)
                 single_model_list = build_single_model_ui(
                     models, add_promotion_links=True
