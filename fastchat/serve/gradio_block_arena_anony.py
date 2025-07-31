@@ -371,7 +371,7 @@ def add_text(
     # Update the model A name if specified
     if is_initial and model_a_name and model_a_name != "ランダム":
         chatbot_updates = [
-            gr.Chatbot.update(
+            gr.Chatbot(
                 state=states[0].to_gradio_chatbot(),
                 label=f"モデル A: {model_a_name}",
             ),
