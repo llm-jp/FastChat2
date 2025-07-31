@@ -273,6 +273,7 @@ def add_text(
     states = [state0, state1]
 
     # Init states if necessary
+    is_initial = False
     if states[0] is None:
         assert states[1] is None
 
@@ -288,6 +289,8 @@ def add_text(
             State(model_left),
             State(model_right),
         ]
+
+        is_initial = True
 
     if len(text) <= 0:
         gr.Warning("メッセージを入力してください")
@@ -365,9 +368,24 @@ def add_text(
         if "deluxe" in states[i].model_name:
             hint_msg = SLOW_MODEL_MSG
     
+    # Update the model A name if specified
+    if is_initial and model_a_name and model_a_name != "ランダム":
+        chatbot_updates = [
+            gr.Chatbot.update(
+                state=states[0].to_gradio_chatbot(),
+                label=f"モデル A: {model_a_name}",
+            ),
+            states[1].to_gradio_chatbot(),
+        ]
+    else:
+        chatbot_updates = [
+            states[0].to_gradio_chatbot(),
+            states[1].to_gradio_chatbot(),
+        ]
+
     return (
         states  # states
-        + [x.to_gradio_chatbot() for x in states]  # chatbots
+        + chatbot_updates  # chatbots
         + [""]  # textbox
         + [disable_btn] * 7  # btn_list
         + [hint_msg]  # slow_warning
