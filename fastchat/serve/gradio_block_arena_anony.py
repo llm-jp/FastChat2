@@ -150,9 +150,12 @@ def regenerate(state0, state1, request: gr.Request):
 
 def clear_history(request: gr.Request):
     logger.info(f"clear_history (anony). ip: {get_ip(request)}")
+    chatbot_updates = [
+        gr.Chatbot([None], label="モデル A" if i == 0 else "モデル B") for i in range(num_sides)
+    ]
     return (
         [None] * num_sides
-        + [None] * num_sides
+        + chatbot_updates
         + anony_names
         + [enable_text]
         + [invisible_btn] * 4
@@ -373,7 +376,7 @@ def add_text(
         chatbot_updates = [
             gr.Chatbot(
                 states[0].to_gradio_chatbot(),
-                label=f"モデル A: {model_a_name}",
+                label=f"モデル A ({model_a_name})",
             ),
             states[1].to_gradio_chatbot(),
         ]
