@@ -150,13 +150,9 @@ def regenerate(state0, state1, request: gr.Request):
 
 def clear_history(request: gr.Request):
     logger.info(f"clear_history (anony). ip: {get_ip(request)}")
-    chatbot_updates = [
-        gr.Chatbot([None], label="モデル A"),
-        [None],
-    ]
     return (
         [None] * num_sides
-        + chatbot_updates
+        + [None] * num_sides
         + anony_names
         + [enable_text]
         + [invisible_btn] * 4
