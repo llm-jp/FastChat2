@@ -372,7 +372,7 @@ def add_text(
     if is_initial and model_a_name and model_a_name != "ランダム":
         chatbot_updates = [
             gr.Chatbot(
-                state=states[0].to_gradio_chatbot(),
+                states[0].to_gradio_chatbot(),
                 label=f"モデル A: {model_a_name}",
             ),
             states[1].to_gradio_chatbot(),
