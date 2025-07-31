@@ -213,23 +213,26 @@ def get_sample_weight(model, outage_models, sampling_weights, sampling_boost_mod
 
 
 def get_battle_pair(
-    models, battle_targets, outage_models, sampling_weights, sampling_boost_models
+    models, battle_targets, outage_models, sampling_weights, sampling_boost_models, model_a_name=None
 ):
     if len(models) == 1:
         return models[0], models[0]
 
-    model_weights = []
-    for model in models:
-        weight = get_sample_weight(
-            model, outage_models, sampling_weights, sampling_boost_models
-        )
-        model_weights.append(weight)
-    total_weight = np.sum(model_weights)
-    model_weights = model_weights / total_weight
-    chosen_idx = np.random.choice(len(models), p=model_weights)
-    chosen_model = models[chosen_idx]
-    # for p, w in zip(models, model_weights):
-    #     print(p, w)
+    if model_a_name and model_a_name != "ランダム":
+        chosen_model = model_a_name
+    else:
+        model_weights = []
+        for model in models:
+            weight = get_sample_weight(
+                model, outage_models, sampling_weights, sampling_boost_models
+            )
+            model_weights.append(weight)
+        total_weight = np.sum(model_weights)
+        model_weights = model_weights / total_weight
+        chosen_idx = np.random.choice(len(models), p=model_weights)
+        chosen_model = models[chosen_idx]
+        # for p, w in zip(models, model_weights):
+        #     print(p, w)
 
     rival_models = []
     rival_weights = []
@@ -254,11 +257,7 @@ def get_battle_pair(
     rival_idx = np.random.choice(len(rival_models), p=rival_weights)
     rival_model = rival_models[rival_idx]
 
-    swap = np.random.randint(2)
-    if swap == 0:
-        return chosen_model, rival_model
-    else:
-        return rival_model, chosen_model
+    return chosen_model, rival_model
 
 
 def add_text(
@@ -266,6 +265,7 @@ def add_text(
     state1,
     text,
     context_selector,
+    model_a_name,
     request: gr.Request,
 ):
     ip = get_ip(request)
@@ -282,6 +282,7 @@ def add_text(
             OUTAGE_MODELS,
             SAMPLING_WEIGHTS,
             SAMPLING_BOOST_MODELS,
+            model_a_name=model_a_name,
         )
         states = [
             State(model_left),
@@ -474,6 +475,12 @@ def build_side_by_side_ui_anony(models):
             model_description_md = get_model_description_md(models)
             gr.Markdown(model_description_md, elem_id="model_description_markdown")
         with gr.Row():
+            model_a_name = gr.Dropdown(
+                ["ランダム"] + models,
+                label="🈯 モデル A を指定する",
+                elem_id="model_a_selector",
+            )
+        with gr.Row():
             for i in range(num_sides):
                 label = "モデル A" if i == 0 else "モデル B"
                 with gr.Column():
@@ -636,7 +643,7 @@ def build_side_by_side_ui_anony(models):
 
     textbox.submit(
         add_text,
-        states + [textbox] + [context_selector],
+        states + [textbox] + [context_selector] + [model_a_name],
         states + chatbots + [textbox] + btn_list + [slow_warning] + [context_selector],
     ).then(
         bot_response_multi,
