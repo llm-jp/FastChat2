@@ -290,10 +290,9 @@ def add_text(
             model_a_name=model_a_name,
         )
         states = [
-            State(model_left),
-            State(model_right),
+            State(model_left, is_specified_model=model_a_name and model_a_name != "ランダム"),
+            State(model_right, is_specified_model=False),
         ]
-
         is_initial = True
 
     if len(text) <= 0:
