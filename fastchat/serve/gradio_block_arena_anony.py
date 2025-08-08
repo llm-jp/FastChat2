@@ -150,13 +150,9 @@ def regenerate(state0, state1, request: gr.Request):
 
 def clear_history(request: gr.Request):
     logger.info(f"clear_history (anony). ip: {get_ip(request)}")
-    chatbot_updates = [
-        gr.Chatbot(None, label="モデル A"),
-        gr.Chatbot(None, label="モデル B"),
-    ]
     return (
         [None] * num_sides
-        + chatbot_updates
+        + [None] * num_sides
         + anony_names
         + [enable_text]
         + [invisible_btn] * 4
@@ -261,7 +257,11 @@ def get_battle_pair(
     rival_idx = np.random.choice(len(rival_models), p=rival_weights)
     rival_model = rival_models[rival_idx]
 
-    return chosen_model, rival_model
+    swap = np.random.randint(2)
+    if swap == 0:
+        return chosen_model, rival_model
+    else:
+        return rival_model, chosen_model
 
 
 def add_text(
@@ -277,7 +277,6 @@ def add_text(
     states = [state0, state1]
 
     # Init states if necessary
-    is_initial = False
     if states[0] is None:
         assert states[1] is None
 
@@ -290,10 +289,9 @@ def add_text(
             model_a_name=model_a_name,
         )
         states = [
-            State(model_left, is_specified_model=model_a_name and model_a_name != "ランダム"),
-            State(model_right, is_specified_model=False),
+            State(model_left),
+            State(model_right),
         ]
-        is_initial = True
 
     if len(text) <= 0:
         gr.Warning("メッセージを入力してください")
@@ -370,25 +368,10 @@ def add_text(
     for i in range(num_sides):
         if "deluxe" in states[i].model_name:
             hint_msg = SLOW_MODEL_MSG
-    
-    # Update the model A name if specified
-    if is_initial and model_a_name and model_a_name != "ランダム":
-        chatbot_updates = [
-            gr.Chatbot(
-                states[0].to_gradio_chatbot(),
-                label=f"モデル A ({model_a_name})",
-            ),
-            states[1].to_gradio_chatbot(),
-        ]
-    else:
-        chatbot_updates = [
-            states[0].to_gradio_chatbot(),
-            states[1].to_gradio_chatbot(),
-        ]
 
     return (
         states  # states
-        + chatbot_updates  # chatbots
+        + [x.to_gradio_chatbot() for x in states]  # chatbots
         + [""]  # textbox
         + [disable_btn] * 7  # btn_list
         + [hint_msg]  # slow_warning
@@ -498,8 +481,7 @@ def build_side_by_side_ui_anony(models):
         with gr.Row():
             model_a_name = gr.Dropdown(
                 ["ランダム"] + models,
-                label="🈯 モデル A を指定する",
-                elem_id="model_a_selector",
+                label="🈯 一方のモデルを指定する",
             )
         with gr.Row():
             for i in range(num_sides):
