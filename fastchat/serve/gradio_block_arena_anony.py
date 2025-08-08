@@ -481,7 +481,7 @@ def build_side_by_side_ui_anony(models):
         with gr.Row():
             model_a_name = gr.Dropdown(
                 ["ランダム"] + models,
-                label="🈯 一方のモデルを指定する",
+                label="🈯 一方のモデルを指定する（※ 指定モデルがAかBかはモデル名を表示するまで分かりません）",
             )
         with gr.Row():
             for i in range(num_sides):
