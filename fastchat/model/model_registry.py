@@ -119,6 +119,7 @@ register_model_info(
 register_model_info(
     [
         "Qwen3-32B",
+        "Qwen3-30B-A3B-Instruct-2507",
     ],
     "Qwen 3",
     "https://qwenlm.github.io/blog/qwen3/",
