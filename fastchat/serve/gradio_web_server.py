@@ -809,7 +809,7 @@ def build_single_model_ui(models, add_promotion_links=False):
     )
 
     notice_markdown = f"""
-# 🏔️ Chat with Large Language Models
+# 🏔️ LLM とチャットする
 {promotion}
 """
 
