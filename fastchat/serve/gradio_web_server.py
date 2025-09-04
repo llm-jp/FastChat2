@@ -314,12 +314,12 @@ def add_text(state, model_selector, text, request: gr.Request):
 
     all_conv_text = state.conv.get_prompt()
     all_conv_text = all_conv_text[-2000:] + "\nuser: " + text
-    flagged = moderation_filter(all_conv_text, [state.model_name])
+    # flagged = moderation_filter(all_conv_text, [state.model_name])
     # flagged = moderation_filter(text, [state.model_name])
-    if flagged:
-        logger.info(f"violate moderation. ip: {ip}. text: {text}")
+    # if flagged:
+        # logger.info(f"violate moderation. ip: {ip}. text: {text}")
         # overwrite the original text
-        text = MODERATION_MSG
+        # text = MODERATION_MSG
 
     if (len(state.conv.messages) - state.conv.offset) // 2 >= CONVERSATION_TURN_LIMIT:
         logger.info(f"conversation turn limit. ip: {ip}. text: {text}")
