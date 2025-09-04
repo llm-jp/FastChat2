@@ -38,6 +38,7 @@ class SeparatorStyle(IntEnum):
     YUAN2 = auto()
     GEMMA = auto()
     CLLM = auto()
+    PHI4 = auto()
     DEFAULT = auto()
 
 
