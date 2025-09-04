@@ -562,7 +562,7 @@ def build_side_by_side_ui_anony(models):
         max_output_tokens = gr.Slider(
             minimum=16,
             maximum=2048,
-            value=1600,
+            value=2048,
             step=64,
             interactive=True,
             label="Max output tokens",
