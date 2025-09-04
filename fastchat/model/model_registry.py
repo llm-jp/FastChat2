@@ -128,6 +128,16 @@ register_model_info(
 
 register_model_info(
     [
+        "gpt-oss-20b",
+        "gpt-oss-120b",
+    ],
+    "GPT-OSS",
+    "https://openai.com/index/introducing-gpt-oss/",
+    "OpenAI’s open-weight models",
+)
+
+register_model_info(
+    [
         "gpt-4o-2024-05-13",
     ],
     "GPT-4o",
