@@ -872,8 +872,8 @@ def build_single_model_ui(models, add_promotion_links=False):
         )
         max_output_tokens = gr.Slider(
             minimum=16,
-            maximum=2048,
-            value=1024,
+            maximum=4000,
+            value=4000,
             step=64,
             interactive=True,
             label="Max output tokens",
