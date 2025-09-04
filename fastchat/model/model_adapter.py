@@ -1102,6 +1102,19 @@ class ReaLMAdapter(BaseModelAdapter):
         return get_conv_template("ReaLM-7b-v1")
 
 
+class GPTOSSAdapter(BaseModelAdapter):
+    """The model adapter for GPT-OSS"""
+
+    def match(self, model_path: str):
+        return "gpt-oss" in model_path
+
+    def load_model(self, model_path: str, from_pretrained_kwargs: dict):
+        raise NotImplementedError()
+
+    def get_default_conv_template(self, model_path: str) -> Conversation:
+        return get_conv_template("gpt-oss")
+
+
 class ChatGPTAdapter(BaseModelAdapter):
     """The model adapter for ChatGPT"""
 

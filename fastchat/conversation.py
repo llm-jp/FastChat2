@@ -1047,6 +1047,18 @@ register_conv_template(
     )
 )
 
+# GPT-OSS default template
+register_conv_template(
+    Conversation(
+        name="gpt-oss",
+        system_message="You are a helpful assistant.",
+        roles=("user", "assistant"),
+        sep_style=SeparatorStyle.DEFAULT,
+        sep=None,
+        max_image_size_mb=None,  # OpenAI does auto-resizing
+    )
+)
+
 # ChatGPT default template
 register_conv_template(
     Conversation(
