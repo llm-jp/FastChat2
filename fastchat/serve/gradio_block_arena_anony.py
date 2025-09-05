@@ -658,7 +658,7 @@ def build_side_by_side_ui_anony(models):
 
     send_btn.click(
         add_text,
-        states + [textbox] + [context_selector],
+        states + [textbox] + [context_selector] + [model_a_name],
         states + chatbots + [textbox] + btn_list + [slow_warning] + [context_selector],
     ).then(
         bot_response_multi,
